@@ -58,5 +58,6 @@ def handle_photo(message):
 
 if __name__ == "__main__":
     print("Bot is starting up using long polling...")
-    # non_stop=True ensures the bot attempts to reconnect if it temporarily loses connection
-    bot.infinity_polling(non_stop=True)
+    # FIX: infinity_polling() handles non_stop=True internally. 
+    # Passing extra arguments here causes a TypeError.
+    bot.infinity_polling()
