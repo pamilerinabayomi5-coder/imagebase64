@@ -11,12 +11,29 @@ if not BOT_TOKEN:
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
+# Welcome image URL and promotional caption text
+WELCOME_IMAGE_URL = "https://freeimage.host/i/CNjKSFp"
+WELCOME_TEXT = (
+    "Atg is a buy and sell token application, you can earn every time you will buy token using Inr or Usdt. "
+    "USDT RATE 101 RS INR 4-5% https://app-web.atg-game.com/regist?code=0eeshowcayk9\n\n"
+    "Channel link https://t.me/atgpay_channel\n\n"
+    "Coustomer care @Andrewtril21\n\n"
+    "-------------------------------------\n"
+    "📷 Send me any image, and I will convert it into a Base64 string for you."
+)
+
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-    bot.reply_to(
-        message, 
-        "👋 Hello! Send me any **Image**, and I will instantly convert it to a **Base64 string** for you."
-    )
+    try:
+        # Send photo with the text as caption
+        bot.send_photo(
+            message.chat.id,
+            photo=WELCOME_IMAGE_URL,
+            caption=WELCOME_TEXT
+        )
+    except Exception:
+        # Fallback to plain text message if image loading fails
+        bot.reply_to(message, WELCOME_TEXT)
 
 @bot.message_handler(content_types=['photo'])
 def handle_photo(message):
@@ -58,6 +75,4 @@ def handle_photo(message):
 
 if __name__ == "__main__":
     print("Bot is starting up using long polling...")
-    # FIX: infinity_polling() handles non_stop=True internally. 
-    # Passing extra arguments here causes a TypeError.
     bot.infinity_polling()
